@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://invkrh.com/"/>
+  <link href="http://invkrh.me/"/>
   <updated>2019-01-30T14:43:56.214Z</updated>
-  <id>http://invkrh.com/</id>
+  <id>http://invkrh.me/</id>
   
   <author>
     <name>Hao Ren</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Interview Questions in 2018</title>
-    <link href="http://invkrh.com/2019/12/19/intervew-questions-in-2018/"/>
-    <id>http://invkrh.com/2019/12/19/intervew-questions-in-2018/</id>
+    <link href="http://invkrh.me/2019/12/19/intervew-questions-in-2018/"/>
+    <id>http://invkrh.me/2019/12/19/intervew-questions-in-2018/</id>
     <published>2019-12-18T23:00:00.000Z</published>
     <updated>2019-01-30T14:43:56.214Z</updated>
     
@@ -31,12 +31,12 @@
     
     </summary>
     
-      <category term="Interview" scheme="http://invkrh.com/categories/Interview/"/>
+      <category term="Interview" scheme="http://invkrh.me/categories/Interview/"/>
     
     
-      <category term="Algorithm" scheme="http://invkrh.com/tags/Algorithm/"/>
+      <category term="Algorithm" scheme="http://invkrh.me/tags/Algorithm/"/>
     
-      <category term="Coding" scheme="http://invkrh.com/tags/Coding/"/>
+      <category term="Coding" scheme="http://invkrh.me/tags/Coding/"/>
     
   </entry>
   
