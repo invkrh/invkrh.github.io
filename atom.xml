@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://invkrh.me/"/>
-  <updated>2019-02-22T12:04:02.858Z</updated>
+  <updated>2019-02-23T12:26:36.595Z</updated>
   <id>http://invkrh.me/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>蒜香蜂蜜鸡</title>
+    <link href="http://invkrh.me/2019/02/23/%E8%92%9C%E9%A6%99%E8%9C%82%E8%9C%9C%E9%B8%A1/"/>
+    <id>http://invkrh.me/2019/02/23/蒜香蜂蜜鸡/</id>
+    <published>2019-02-22T23:56:42.000Z</published>
+    <updated>2019-02-23T12:26:36.595Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="用时"><a href="#用时" class="headerlink" title="用时"></a>用时</h3><p>30分钟</p><a id="more"></a><h3 id="原料"><a href="#原料" class="headerlink" title="原料"></a>原料</h3><p>四块鸡上腿肉<br>盐<br>胡椒<br>四瓣蒜<br>蜂蜜（2）<br>米醋（1）<br>酱油（1）<br>大蒜粉（opt）<br>白芝麻（opt）<br>葱（opt）</p><h3 id="做法"><a href="#做法" class="headerlink" title="做法"></a>做法</h3><ol><li>鸡肉洗干净，抹上盐，黑胡椒，大蒜粉，腌制10分钟</li><li>四瓣蒜 变成 蒜末 最好 蒜泥</li><li>热锅冷油 油少量（鸡皮出油）皮朝下放入鸡肉 每2分钟 翻面 共8分钟</li><li>锅中央放入蒜泥 蜂蜜 米醋 酱油 80毫升 水 火开大点</li><li>收汁 翻面 等汁浓稠 出锅（可以撒上 白芝麻 和 葱）</li></ol><h3 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h3><img src="/2019/02/23/蒜香蜂蜜鸡/result.jpeg">]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;用时&quot;&gt;&lt;a href=&quot;#用时&quot; class=&quot;headerlink&quot; title=&quot;用时&quot;&gt;&lt;/a&gt;用时&lt;/h3&gt;&lt;p&gt;30分钟&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Cuisine" scheme="http://invkrh.me/categories/Cuisine/"/>
+    
+    
+      <category term="Plat" scheme="http://invkrh.me/tags/Plat/"/>
+    
+      <category term="Poulet" scheme="http://invkrh.me/tags/Poulet/"/>
+    
+  </entry>
   
   <entry>
     <title>Interview Questions in 2018</title>
