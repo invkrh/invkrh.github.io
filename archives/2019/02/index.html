@@ -1215,12 +1215,14 @@
           var docRef = articles.doc('')
           increaseCount(docRef, true)
             .then(function() { return getCount(docRef) })
-            .then(appendCount2PostMeta($('.post-meta')));
+            .then(appendCount2PostMeta($('.post-meta'))); // only one post-meta class for post page
         } else if (false) { //is index page
           var titles = []; //array to titles
 
           
-            titles.push('蒜香蜂蜜鸡');
+            if (false) {
+              titles.push('蒜香蜂蜜鸡');
+            }
           
 
           var promises = titles.map(function (title) {
@@ -1230,7 +1232,7 @@
           })
 
           Promise.all(promises).then(function (counts) {
-            var metas = $('.post-meta');
+            var metas = $('.post-meta'); // all the post-meta classes for current index page
             counts.forEach(function (val, idx) {
               appendCount2PostMeta(metas[idx])(val);
             })
