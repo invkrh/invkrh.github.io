@@ -43,8 +43,6 @@
 
 
 
-
-
   
   
   
@@ -90,7 +88,7 @@
   
     
     
-    <link rel="stylesheet" referrerpolicy="no-referrer" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic|Lato:300,300italic,400,400italic,700,700italic|Merriweather:300,300italic,400,400italic,700,700italic|Parisienne:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+    <link rel="stylesheet" referrerpolicy="no-referrer" type="text/css" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lato:300,300italic,400,400italic,700,700italic|Raleway:300,300italic,400,400italic,700,700italic|Parisienne:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
   
 
 
@@ -100,19 +98,19 @@
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
 
-<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-next.png?v=7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-next.png?v=7.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.0.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.0.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.0.1">
 
 
-  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=7.0.0" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=7.0.1" color="#222">
 
 
 
@@ -125,8 +123,10 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    version: '7.0.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -158,7 +158,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/shoes.png">
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/horse-vs-human.jpeg">
-<meta property="og:updated_time" content="2019-03-19T00:14:46.371Z">
+<meta property="og:updated_time" content="2019-03-19T23:58:46.181Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow Specialization Learning Note">
 <meta name="twitter:description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Coming soon …">
@@ -189,10 +189,13 @@
 
   <script async src="//www.googletagmanager.com/gtag/js?id=UA-74632317-1"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-74632317-1');
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-74632317-1');
+    }
   </script>
 
 
@@ -570,14 +573,14 @@ ys = np.array([-3.0, -1.0, 1.0, 3.0, 5.0, 7.0], dtype=float)
 model.fit(xs, ys, epochs=500)
 print(model.predict([10.0]))
 </code></pre>
-<p>The predicted value is not 19.0 but aa little under. It is because neural networks deal with probabilities, so given the data that we fed the NN with, it calculated that there is a very high probability that the relationship between X and Y is Y=2X-1, but with only 6 data points we can’t know for sure. As a result, the result for 10 is very close to 19, but not necessarily 19.</p>
+<p>The predicted value is not 19.0 but a little under. It is because neural networks deal with probabilities, so given the data that we fed the NN with, it calculated that there is a very high probability that the relationship between $X$ and $Y$ is $Y=2X-1$, but with only 6 data points we can’t know for sure. As a result, the result for 10 is very close to 19, but not necessarily 19.</p>
 <hr>
 <h1 id="C1W2-Introduction-to-Computer-Vision"><a href="#C1W2-Introduction-to-Computer-Vision" class="headerlink" title="C1W2: Introduction to Computer Vision"></a>C1W2: Introduction to Computer Vision</h1><h2 id="Note-1"><a href="#Note-1" class="headerlink" title="Note"></a>Note</h2><h3 id="Why-are-the-labels-numbers-instead-of-words"><a href="#Why-are-the-labels-numbers-instead-of-words" class="headerlink" title="Why are the labels numbers instead of words"></a>Why are the labels numbers instead of words</h3><p>Using a number is a first step in avoiding bias — instead of labelling it with words in a specific language and excluding people who don’t speak that language! You can learn more about bias and techniques to avoid it <a href="https://developers.google.com/machine-learning/fairness-overview/" target="_blank" rel="noopener">here</a>.</p>
 <h3 id="What-is-cross-entropy-CE"><a href="#What-is-cross-entropy-CE" class="headerlink" title="What is cross entropy (CE)"></a>What is cross entropy (CE)</h3><script type="math/tex; mode=display">CE = - \sum_{i=0}^{C - 1} y_i \cdot log( f(\vec{x_i}) )</script><p>where </p>
 <ul>
 <li>$C$: the number of classes</li>
 <li>$\vec{x_i}$: the feature vector of the example $i$</li>
-<li>$y_i: the label of the example $i$</li>
+<li>$y_i$: the label of the example $i$</li>
 <li>$f$: the learned prediction function which takes the feacture vector $\vec{x_i}$ and returns the probability of being class $y_i$</li>
 </ul>
 <p>When $c = 2$</p>
@@ -616,7 +619,7 @@ model.evaluate(test_images, test_labels)
 </code></pre>
 <hr>
 <h1 id="C1W3-Enhancing-Vision-with-Convolutional-Neural-Networks"><a href="#C1W3-Enhancing-Vision-with-Convolutional-Neural-Networks" class="headerlink" title="C1W3: Enhancing Vision with Convolutional Neural Networks"></a>C1W3: Enhancing Vision with Convolutional Neural Networks</h1><h2 id="Note-2"><a href="#Note-2" class="headerlink" title="Note"></a>Note</h2><h3 id="Convolution-Layer"><a href="#Convolution-Layer" class="headerlink" title="Convolution Layer"></a>Convolution Layer</h3><p>Each kernal is an edge detector which is perfect for computer vision, because often it’s features that can get highlighted like this that distinguish one item for another, and the amount of information needed is then much less…because you’ll just train on the highlighted features.</p>
-<h3 id="MaxPooling-Layer"><a href="#MaxPooling-Layer" class="headerlink" title="MaxPooling Layer"></a>MaxPooling Layer</h3><p>The convolution layer is followed by a MaxPooling layer which is then designed to compress the image, while maintaining the content of the features that were highlighted by the convlution</p>
+<h3 id="MaxPooling-Layer"><a href="#MaxPooling-Layer" class="headerlink" title="MaxPooling Layer"></a>MaxPooling Layer</h3><p>The convolution layer is followed by a MaxPooling layer which is then designed to compress the image, while maintaining the content of the features that were highlighted by the convolution</p>
 <h3 id="Why-CNN-works"><a href="#Why-CNN-works" class="headerlink" title="Why CNN works"></a>Why CNN works</h3><p>CNN tries different filters on the image and learning which ones work when looking at the training data. As a result, when it works, you’ll have greatly reduced information passing through the network, but because it isolates and identifies features, you can also get increased accuracy</p>
 <h2 id="Code-2"><a href="#Code-2" class="headerlink" title="Code"></a>Code</h2><h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><pre><code class="lang-Python"># Reshape to a 4D tensor, otherwise the Convolutions do not recognize the shape
 training_images=training_images.reshape(60000, 28, 28, 1)
@@ -830,6 +833,7 @@ history = model.fit_generator(
 
 
 
+
   
 
 
@@ -919,9 +923,6 @@ history = model.fit_generator(
   </div>
 
   <aside id="sidebar" class="sidebar">
-    
-      <div id="sidebar-dimmer"></div>
-    
     <div class="sidebar-inner">
 
       
@@ -944,7 +945,7 @@ history = model.fit_generator(
               <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="Hao Ren">
             
               <p class="site-author-name" itemprop="name">Hao Ren</p>
-              <p class="site-description motion-element" itemprop="description">Machine Learning Engineer @ Criteo</p>
+              <div class="site-description motion-element" itemprop="description">Machine Learning Engineer @ Criteo</div>
           </div>
 
           
@@ -964,7 +965,11 @@ history = model.fit_generator(
                 
                 
                 <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
                     
                     
                       
@@ -985,7 +990,11 @@ history = model.fit_generator(
                 
                 
                 <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
                     
                     
                       
@@ -1015,6 +1024,8 @@ history = model.fit_generator(
                 RSS
               </a>
             </div>
+          
+
           
 
           
@@ -1059,6 +1070,7 @@ history = model.fit_generator(
           
              <div class="cc-license motion-element" itemprop="license">
               
+              
                 
               
               
@@ -1101,6 +1113,7 @@ history = model.fit_generator(
 
     </div>
   </aside>
+  
 
 
         
@@ -1207,33 +1220,41 @@ history = model.fit_generator(
   
 
 
-  <script src="/js/src/utils.js?v=7.0.0"></script>
+  <script src="/js/src/utils.js?v=7.0.1"></script>
 
-  <script src="/js/src/motion.js?v=7.0.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
-
+  <script src="/js/src/motion.js?v=7.0.1"></script>
 
 
 
   
-  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
-<script src="/js/src/post-details.js?v=7.0.0"></script>
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
 
 
 
   
 
 
-  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
 
 
+  
+  <script src="/js/src/js.cookie.js?v=7.0.1"></script>
+  <script src="/js/src/scroll-cookie.js?v=7.0.1"></script>
+
+
+  
+
+  
 
   
   
@@ -1261,7 +1282,8 @@ history = model.fit_generator(
     meta: guest,
     lang: 'en',
     pageSize: '10' || 10,
-    visitor: false
+    visitor: false,
+    lang: '' || 'zh-cn'
   });
 </script>
 
@@ -1740,34 +1762,37 @@ history = model.fit_generator(
 
   MathJax.Hub.Config({
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
       processEscapes: true,
       skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     },
     TeX: {
       
       equationNumbers: {
-        autoNumber: "AMS"
+        autoNumber: 'AMS'
       }
     }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
   });
 </script>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
-      for (i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
   });
 </script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<style>
-.MathJax_Display {
-  overflow: auto hidden;
-}
-</style>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
   
@@ -1786,9 +1811,6 @@ history = model.fit_generator(
   
 
   
-  <script src="/js/src/js.cookie.js?v=7.0.0"></script>
-  <script src="/js/src/scroll-cookie.js?v=7.0.0"></script>
-
 
   
 
@@ -1796,7 +1818,9 @@ history = model.fit_generator(
 
   
 
+  
 
+  
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
   <script type="text/javascript" src="/js/prism.js"></script>
 </body>

@@ -43,8 +43,6 @@
 
 
 
-
-
   
   
   
@@ -90,7 +88,7 @@
   
     
     
-    <link rel="stylesheet" referrerpolicy="no-referrer" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic|Lato:300,300italic,400,400italic,700,700italic|Merriweather:300,300italic,400,400italic,700,700italic|Parisienne:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+    <link rel="stylesheet" referrerpolicy="no-referrer" type="text/css" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Lato:300,300italic,400,400italic,700,700italic|Raleway:300,300italic,400,400italic,700,700italic|Parisienne:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
   
 
 
@@ -100,19 +98,19 @@
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
 
-<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-next.png?v=7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-next.png?v=7.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.0.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.0.1">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.0.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.0.1">
 
 
-  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=7.0.0" color="#222">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=7.0.1" color="#222">
 
 
 
@@ -125,8 +123,10 @@
   var CONFIG = {
     root: '/',
     scheme: 'Mist',
-    version: '7.0.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -188,10 +188,13 @@
 
   <script async src="//www.googletagmanager.com/gtag/js?id=UA-74632317-1"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-74632317-1');
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-74632317-1');
+    }
   </script>
 
 
@@ -568,6 +571,7 @@
 
 
 
+
   
 
 
@@ -661,9 +665,6 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
-    
-      <div id="sidebar-dimmer"></div>
-    
     <div class="sidebar-inner">
 
       
@@ -686,7 +687,7 @@
               <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpeg" alt="Hao Ren">
             
               <p class="site-author-name" itemprop="name">Hao Ren</p>
-              <p class="site-description motion-element" itemprop="description">Machine Learning Engineer @ Criteo</p>
+              <div class="site-description motion-element" itemprop="description">Machine Learning Engineer @ Criteo</div>
           </div>
 
           
@@ -706,7 +707,11 @@
                 
                 
                 <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
                     
                     
                       
@@ -727,7 +732,11 @@
                 
                 
                 <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
                     
                     
                       
@@ -757,6 +766,8 @@
                 RSS
               </a>
             </div>
+          
+
           
 
           
@@ -801,6 +812,7 @@
           
              <div class="cc-license motion-element" itemprop="license">
               
+              
                 
               
               
@@ -843,6 +855,7 @@
 
     </div>
   </aside>
+  
 
 
         
@@ -949,33 +962,41 @@
   
 
 
-  <script src="/js/src/utils.js?v=7.0.0"></script>
+  <script src="/js/src/utils.js?v=7.0.1"></script>
 
-  <script src="/js/src/motion.js?v=7.0.0"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
-
+  <script src="/js/src/motion.js?v=7.0.1"></script>
 
 
 
   
-  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
-<script src="/js/src/post-details.js?v=7.0.0"></script>
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
 
 
 
   
 
 
-  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
 
 
+  
+  <script src="/js/src/js.cookie.js?v=7.0.1"></script>
+  <script src="/js/src/scroll-cookie.js?v=7.0.1"></script>
+
+
+  
+
+  
 
   
   
@@ -1003,7 +1024,8 @@
     meta: guest,
     lang: 'en',
     pageSize: '10' || 10,
-    visitor: false
+    visitor: false,
+    lang: '' || 'zh-cn'
   });
 </script>
 
@@ -1482,34 +1504,37 @@
 
   MathJax.Hub.Config({
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
       processEscapes: true,
       skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     },
     TeX: {
       
       equationNumbers: {
-        autoNumber: "AMS"
+        autoNumber: 'AMS'
       }
     }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
   });
 </script>
 
 <script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
-      for (i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
   });
 </script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<style>
-.MathJax_Display {
-  overflow: auto hidden;
-}
-</style>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
   
@@ -1528,9 +1553,6 @@
   
 
   
-  <script src="/js/src/js.cookie.js?v=7.0.0"></script>
-  <script src="/js/src/scroll-cookie.js?v=7.0.0"></script>
-
 
   
 
@@ -1538,7 +1560,9 @@
 
   
 
+  
 
+  
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
   <script type="text/javascript" src="/js/prism.js"></script>
 </body>
