@@ -154,7 +154,7 @@ template {
 body {
   position: relative;
   font-family: 'Monda', "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 2;
   color: #555;
   background: #fff;
@@ -171,7 +171,7 @@ body {
 }
 @media (min-width: 1200px) {
   body {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 h1,
@@ -1249,7 +1249,7 @@ pre .javascript .function {
 .post-body .figure .caption {
   margin: -20px auto 15px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #999;
   font-weight: bold;
   line-height: 1;
@@ -1869,7 +1869,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #656081;
+  background: #e2c8fb;
 }
 .links-of-blogroll {
   margin-top: 10px;
@@ -2189,7 +2189,7 @@ ul.popular-posts .popular-posts-item {
 }
 ul.popular-posts .popular-posts-item .popular-posts-title {
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
   line-height: 2.4;
 }
@@ -2410,7 +2410,7 @@ ul.breadcrumb {
   margin: 1em 0;
   padding: 0 2em;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 ul.breadcrumb li {
   display: inline;
@@ -2664,7 +2664,7 @@ hr {
 }
 @media (max-width: 767px) {
   .posts-expand .post-body {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 .posts-expand .post-body img {
@@ -2690,7 +2690,7 @@ hr {
 }
 .post-button a {
   padding: 0;
-  font-size: 16px;
+  font-size: 14px;
   background: none;
   border: none;
   border-bottom: 2px solid #666;
@@ -2698,12 +2698,12 @@ hr {
 }
 @media (max-width: 767px) {
   .post-button a {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 @media (min-width: 1200px) {
   .post-button a {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 .post-button a:hover {
