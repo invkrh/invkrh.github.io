@@ -118,6 +118,14 @@ pre[class*="language-"] {
 	cursor: help;
 }
 
+.token a {
+	color: inherit;
+}
+
+.token a:hover {
+	border-bottom-color: #FFFFFF;
+}
+
 pre[class*="language-"].line-numbers {
 	position: relative;
 	padding-left: 3.8em;
