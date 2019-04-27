@@ -1,0 +1,4 @@
+li .has-jax, ul .has-jax {
+    overflow-x: visible;
+    overflow-y: visible;
+}

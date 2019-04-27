@@ -150,18 +150,15 @@
 
   <meta name="description" content="Machine Learning Engineer @ Criteo">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Categories">
-<meta property="og:url" content="http://invkrh.me/categories/index.html">
+<meta property="og:title" content="Yorozuya">
+<meta property="og:url" content="http://invkrh.me/categories/Competition/index.html">
 <meta property="og:site_name" content="Yorozuya">
 <meta property="og:description" content="Machine Learning Engineer @ Criteo">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-01-30T14:43:56.225Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Categories">
+<meta name="twitter:title" content="Yorozuya">
 <meta name="twitter:description" content="Machine Learning Engineer @ Criteo">
 
-
-  
 
 
   <link rel="alternate" href="/atom.xml" title="Yorozuya" type="application/atom+xml">
@@ -170,7 +167,7 @@
 
   
   
-  <link rel="canonical" href="http://invkrh.me/categories/">
+  <link rel="canonical" href="http://invkrh.me/categories/Competition/">
 
 
 
@@ -180,7 +177,7 @@
   };
 </script>
 
-  <title>Categories | Yorozuya</title>
+  <title>Category: Competition | Yorozuya</title>
   
 
 
@@ -245,7 +242,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -428,75 +425,53 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-    
-    
-    <div class="post-block page">
-      <header class="post-header">
-
-<h1 class="post-title" itemprop="name headline">Categories
-
-</h1>
-
-<div class="post-meta">
   
   
+  
+  <div class="post-block category">
 
-
-
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-        
-        
-          <div class="category-all-page">
-            <div class="category-all-title">
-              
-              
-                
-              
-                
-                  
-                
-              
-                
-                  
-                
-              
-                
-                  
-                
-              
-                
-                  
-                
-              
-              4 categories in total
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Competition/">Competition</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cuisine/">Cuisine</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Deep-Learning/">Deep Learning</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a><span class="category-list-count">1</span></li></ul>
-            </div>
-          </div>
-        
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>Competition<small>Category</small>
+        </h1>
       </div>
+
       
-      
+        
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+          <a class="post-title-link" href="/2019/04/13/google-hash-code-2019/" itemprop="url">
+            
+              <span itemprop="name">Google Hash Code 2019</span>
+            
+          </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-13T00:00:00+02:00" content="2019-04-13">
+          04-13
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
       
     </div>
-    
 
-
-
-    
-    
-    
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
@@ -804,10 +779,6 @@
 
 
   
-  <script src="/js/scrollspy.js?v=7.1.0"></script>
-<script src="/js/post-details.js?v=7.1.0"></script>
-
-
 
   
 
@@ -1207,10 +1178,10 @@
           if (firstViewOnly && window.localStorage) {
             // increase view count if the article is viewed for the first time
             // increase view count in case the doc is removed
-            if (!window.localStorage.getItem('Categories') || prevCount == 0) {
+            if (!window.localStorage.getItem('') || prevCount == 0) {
               docRef.set({ count: prevCount + 1 })
               .then(function() {
-                localStorage.setItem('Categories', true);
+                localStorage.setItem('', true);
               })
               .catch(function(error) {
                 console.error("Error writing document: ", error);
@@ -1247,7 +1218,7 @@
       function countRead() {
         // See: https://hexo.io/docs/helpers.html
         if (false) { //is article page
-          var docRef = articles.doc('Categories')
+          var docRef = articles.doc('')
           getCount(docRef)
             .then(increaseCount(docRef, true))
             .then(function() { return getCount(docRef) })
@@ -1255,6 +1226,8 @@
         } else if (false) { //is index page
           var titles = []; //array to titles
 
+          
+            titles.push('Google Hash Code 2019');
           
 
           var promises = titles.map(function (title) {
