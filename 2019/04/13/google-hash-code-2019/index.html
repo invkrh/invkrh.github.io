@@ -156,7 +156,7 @@
 <meta property="og:site_name" content="Yorozuya">
 <meta property="og:description" content="My thoughts on the qualification round of Google Hash Code 2019. If you are interested in the past Online Qualification Round and Finals problem statements, you should check this page.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-04-27T20:45:43.425Z">
+<meta property="og:updated_time" content="2019-04-27T21:01:24.604Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Google Hash Code 2019">
 <meta name="twitter:description" content="My thoughts on the qualification round of Google Hash Code 2019. If you are interested in the past Online Qualification Round and Finals problem statements, you should check this page.">
@@ -560,8 +560,7 @@
 <blockquote>
 <p>For simplicity, <strong>horizontal slide</strong> refers to a slide containing 1 horizontal slide and <strong>vertical slide</strong> refers to a slide containing 2 vertical slides</p>
 </blockquote>
-<h2 id="Greedy-Algorithm"><a href="#Greedy-Algorithm" class="headerlink" title="Greedy Algorithm"></a>Greedy Algorithm</h2><h3 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h3><p>Actually, we can consider the problem as building a sequence of slides and maximizing its overall transition score. Given the tag set of the previous slide, we can find a slide which maximizes the current transition. If every subsequent transition is optimized, we could eventually optimize the final score. </p>
-<h3 id="Statistics"><a href="#Statistics" class="headerlink" title="Statistics"></a>Statistics</h3><p>Now, let’s look at how the tags are distributed in the input files. This may help us understand the problem better.</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>First of all, let’s look at how the tags are distributed in the input files. This may help us understand the problem better.</p>
 <div class="table-container">
 <table>
 <thead>
@@ -660,7 +659,8 @@
 <li>In term of photos per tag, D and E are thousands of times larger than B</li>
 <li>E contains vertical photos only which would be the last challenge</li>
 </ul>
-<h3 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h3><pre><code>prevSlide &lt;- create a slide of 1 horizontal unused photo or 2 vertical unused photos
+<h3 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h3><p>Actually, we can consider the problem as building a sequence of slides and maximizing its overall transition score. Given the tag set of the previous slide, we can find a slide which maximizes the current transition. If every subsequent transition is optimized, we could eventually optimize the final score.</p>
+<h3 id="Greedy-Algorithm"><a href="#Greedy-Algorithm" class="headerlink" title="Greedy Algorithm"></a>Greedy Algorithm</h3><pre><code>prevSlide &lt;- create a slide of 1 horizontal unused photo or 2 vertical unused photos
 result += prevSlide
 
 while some photos are unused:
@@ -1038,7 +1038,7 @@ Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca 
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#General-information"><span class="nav-text">General information</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-statement"><span class="nav-text">Problem statement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Greedy-Algorithm"><span class="nav-text">Greedy Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intuition"><span class="nav-text">Intuition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Statistics"><span class="nav-text">Statistics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Algorithm"><span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#How-to-find-the-best-horizontal-slide-w-r-t-the-previous-slide"><span class="nav-text">How to find the best horizontal slide w.r.t the previous slide?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How-to-find-the-best-vertical-slide-w-r-t-the-previous-slide"><span class="nav-text">How to find the best vertical slide w.r.t the previous slide?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Can-we-do-better"><span class="nav-text">Can we do better?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Code"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-text">Result</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Auxiliary"><span class="nav-text">Auxiliary</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#General-information"><span class="nav-text">General information</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem-statement"><span class="nav-text">Problem statement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-text">Solution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intuition"><span class="nav-text">Intuition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Greedy-Algorithm"><span class="nav-text">Greedy Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#How-to-find-the-best-horizontal-slide-w-r-t-the-previous-slide"><span class="nav-text">How to find the best horizontal slide w.r.t the previous slide?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How-to-find-the-best-vertical-slide-w-r-t-the-previous-slide"><span class="nav-text">How to find the best vertical slide w.r.t the previous slide?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Can-we-do-better"><span class="nav-text">Can we do better?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Code"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-text">Result</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Auxiliary"><span class="nav-text">Auxiliary</span></a></li></ol></div>
             
 
           </div>
