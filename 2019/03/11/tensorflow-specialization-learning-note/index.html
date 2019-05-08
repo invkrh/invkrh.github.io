@@ -148,20 +148,20 @@
 
 
 
-  <meta name="description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Coming soon …">
+  <meta name="description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Course 2: Convolutional Neural Netwo">
 <meta name="keywords" content="Coding,TensorFlow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tensorflow Specialization Learning Note">
 <meta property="og:url" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/index.html">
 <meta property="og:site_name" content="Yorozuya">
-<meta property="og:description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Coming soon …">
+<meta property="og:description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Course 2: Convolutional Neural Netwo">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/shoes.png">
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/horse-vs-human.jpeg">
-<meta property="og:updated_time" content="2019-03-28T23:37:46.987Z">
+<meta property="og:updated_time" content="2019-05-07T19:56:06.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow Specialization Learning Note">
-<meta name="twitter:description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Coming soon …">
+<meta name="twitter:description" content="A learning note of the coursera specialization TensorFlow: From Basics to Mastery given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Course 2: Convolutional Neural Netwo">
 <meta name="twitter:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/shoes.png">
 
 
@@ -539,6 +539,7 @@
         <p>A learning note of the coursera specialization <strong><a href="https://www.deeplearning.ai/tensorflow-specialization/" target="_blank" rel="noopener">TensorFlow: From Basics to Mastery</a></strong> given by <a href="http://deeplearning.ai" target="_blank" rel="noopener">deeplearning.ai</a>.</p>
 <ul>
 <li>Course 1: Introduction to TensorFlow for AI, ML and DL</li>
+<li>Course 2: Convolutional Neural Networks in TensorFlow</li>
 <li>Coming soon …</li>
 </ul>
 <a id="more"></a>
@@ -795,29 +796,196 @@ validation_datagen = ImageDataGenerator(rescale=1/255)
 train_generator = train_datagen.flow_from_directory(
         &#39;/tmp/horse-or-human/&#39;,  # This is the source directory for training images
         target_size=(300, 300),  # All images will be resized to 150x150
-        batch_size=128,
+        batch_size=128, # number of images for each batch
         # Since we use binary_crossentropy loss, we need binary labels
         class_mode=&#39;binary&#39;)
 
 # Flow training images in batches of 128 using train_datagen generator
 validation_generator = validation_datagen.flow_from_directory(
-        &#39;/tmp/validation-horse-or-human/&#39;,  # This is the source directory for training images
+        &#39;/tmp/validation-horse-or-human/&#39;,  # This is the source directory for validation images
         target_size=(300, 300),  # All images will be resized to 150x150
-        batch_size=32,
+        batch_size=32, # number of images for each batch
         # Since we use binary_crossentropy loss, we need binary labels
         class_mode=&#39;binary&#39;)
 
 history = model.fit_generator(
       train_generator,
-      steps_per_epoch=8,  
+      steps_per_epoch=8, # number of batches for each epoch durning training  
       epochs=15,
       verbose=1,
       validation_data = validation_generator,
-      validation_steps=8)
+      validation_steps=8) # number of batches for each epoch durning validation
 </code></pre>
 <h3 id="Visualizing-Intermediate-Representations"><a href="#Visualizing-Intermediate-Representations" class="headerlink" title="Visualizing Intermediate Representations"></a>Visualizing Intermediate Representations</h3><img src="/2019/03/11/tensorflow-specialization-learning-note/horse-vs-human.jpeg" title="Intermediate outputs">
 <p>As you can see we go from the raw pixels of the images to increasingly abstract and compact representations. The representations downstream start highlighting what the network pays attention to, and they show fewer and fewer features being “activated”; most are set to zero. This is called “sparsity.” Representation sparsity is a key feature of deep learning.</p>
 <p>These representations carry increasingly less information about the original pixels of the image, but increasingly refined information about the class of the image. You can think of a convnet (or a deep network in general) as an information distillation pipeline.</p>
+<h1 id="C2W1-Exploring-a-Larger-Dataset"><a href="#C2W1-Exploring-a-Larger-Dataset" class="headerlink" title="C2W1: Exploring a Larger Dataset"></a>C2W1: Exploring a Larger Dataset</h1><h2 id="Note-4"><a href="#Note-4" class="headerlink" title="Note"></a>Note</h2><ul>
+<li>Data: <a href="https://www.kaggle.com/c/dogs-vs-cats" target="_blank" rel="noopener">https://www.kaggle.com/c/dogs-vs-cats</a></li>
+<li><code>model.layers</code> API allows you to inspect the impact of convolutions on the images.</li>
+</ul>
+<h2 id="Code-4"><a href="#Code-4" class="headerlink" title="Code"></a>Code</h2><pre><code class="lang-python">import numpy as np
+import random
+from   tensorflow.keras.preprocessing.image import img_to_array, load_img
+
+# Let&#39;s define a new Model that will take an image as input, and will output
+# intermediate representations for all layers in the previous model after
+# the first.
+successive_outputs = [layer.output for layer in model.layers[1:]]
+
+#visualization_model = Model(img_input, successive_outputs)
+visualization_model = tf.keras.models.Model(inputs = model.input, outputs = successive_outputs)
+
+# Let&#39;s prepare a random input image of a cat or dog from the training set.
+cat_img_files = [os.path.join(train_cats_dir, f) for f in train_cat_fnames]
+dog_img_files = [os.path.join(train_dogs_dir, f) for f in train_dog_fnames]
+
+img_path = random.choice(cat_img_files + dog_img_files)
+img = load_img(img_path, target_size=(150, 150))  # this is a PIL image
+
+x   = img_to_array(img)                           # Numpy array with shape (150, 150, 3)
+x   = x.reshape((1,) + x.shape)                   # Numpy array with shape (1, 150, 150, 3)
+
+# Rescale by 1/255
+x /= 255.0
+
+# Let&#39;s run our image through our network, thus obtaining all
+# intermediate representations for this image.
+successive_feature_maps = visualization_model.predict(x)
+
+# These are the names of the layers, so can have them as part of our plot
+layer_names = [layer.name for layer in model.layers]
+
+# -----------------------------------------------------------------------
+# Now let&#39;s display our representations
+# -----------------------------------------------------------------------
+for layer_name, feature_map in zip(layer_names, successive_feature_maps):
+
+  if len(feature_map.shape) == 4:
+
+    #-------------------------------------------
+    # Just do this for the conv / maxpool layers, not the fully-connected layers
+    #-------------------------------------------
+    n_features = feature_map.shape[-1]  # number of features in the feature map
+    size       = feature_map.shape[ 1]  # feature map shape (1, size, size, n_features)
+
+    # We will tile our images in this matrix
+    display_grid = np.zeros((size, size * n_features))
+
+    #-------------------------------------------------
+    # Postprocess the feature to be visually palatable
+    #-------------------------------------------------
+    for i in range(n_features):
+      x  = feature_map[0, :, :, i]
+      x -= x.mean()
+      x /= x.std ()
+      x *=  64
+      x += 128
+      x  = np.clip(x, 0, 255).astype(&#39;uint8&#39;)
+      display_grid[:, i * size : (i + 1) * size] = x # Tile each filter into a horizontal grid
+
+    #-----------------
+    # Display the grid
+    #-----------------
+
+    scale = 20. / n_features
+    plt.figure( figsize=(scale * n_features, scale) )
+    plt.title ( layer_name )
+    plt.grid  ( False )
+    plt.imshow( display_grid, aspect=&#39;auto&#39;, cmap=&#39;viridis&#39; )
+</code></pre>
+<h1 id="C2W2-Augmentation-A-technique-to-avoid-overfitting"><a href="#C2W2-Augmentation-A-technique-to-avoid-overfitting" class="headerlink" title="C2W2: Augmentation: A technique to avoid overfitting"></a>C2W2: Augmentation: A technique to avoid overfitting</h1><h2 id="Note-5"><a href="#Note-5" class="headerlink" title="Note"></a>Note</h2><h3 id="Image-augmentation"><a href="#Image-augmentation" class="headerlink" title="Image augmentation"></a>Image augmentation</h3><ul>
+<li><p>Image augmentation implementation in Keras: <a href="https://keras.io/preprocessing/image/" target="_blank" rel="noopener">https://keras.io/preprocessing/image/</a></p>
+</li>
+<li><p>Image generator library lets you load the images into memory, process the images and then steam that to the training set to the neural network we will ultimatedly learn on.The preprocessing doesn’t require you to edit your raw images, nor does it amend them for you on-disk. It does it in-memory as it’s performing the training, allowing you to experiment without impacting your dataset.</p>
+</li>
+<li><p>As we start training, we’ll initially see that the accuracy is lower than with the non-augmented version. This is because of the random effects of the different image processing that’s being done. As it runs for a few more epochs, you’ll see the accuracy slowly climbing.</p>
+</li>
+<li><p>The image augmentation introduces a random element to the training images but if the validation set doesn’t have the same randomness, then its results can fluctuate. You don’t just need a broad set of images for training, you also need them for testing or the image augmentation won’t help you very much.(which does NOT mean that you should augment your validation set, see below)</p>
+</li>
+<li><p>Validation dataset should not be augmented: the validation set is used to estimate how your method works on real world data, thus it should only contain real world data. Adding augmented data will not improve the accuracy of the validation. It will at best say something about how well your method responds to the data augmentation, and at worst ruin the validation results and interpretability. As the validation accuracy is no longer a good proxy for the accuracy on new unseen data if you augment the validation data</p>
+</li>
+</ul>
+<h2 id="Code-5"><a href="#Code-5" class="headerlink" title="Code"></a>Code</h2><pre><code class="lang-python">train_datagen = ImageDataGenerator(
+      rescale=1./255,
+      rotation_range=40,
+      width_shift_range=0.2,
+      height_shift_range=0.2,
+      shear_range=0.2,
+      zoom_range=0.2,
+      horizontal_flip=True,
+      fill_mode=&#39;nearest&#39;)
+</code></pre>
+<h1 id="C2W3-Transfer-Learning"><a href="#C2W3-Transfer-Learning" class="headerlink" title="C2W3: Transfer Learning"></a>C2W3: Transfer Learning</h1><h2 id="Note-6"><a href="#Note-6" class="headerlink" title="Note"></a>Note</h2><h3 id="What-is-transfer-learning"><a href="#What-is-transfer-learning" class="headerlink" title="What is transfer learning"></a>What is transfer learning</h3><p>You can take an existing model, freeze many of its layers to prevent them being retrained, and effectively ‘remember’ the convolutions it was trained on to fit images, then added your own DNN underneath this so that you could retrain on your images using the convolutions from the other model.</p>
+<h3 id="Why-dropout-can-do-the-regularization"><a href="#Why-dropout-can-do-the-regularization" class="headerlink" title="Why dropout can do the regularization"></a>Why dropout can do the regularization</h3><p>The idea behind Dropouts is that they remove a random number of neurons in your neural network. This works very well for two reasons: </p>
+<ul>
+<li><p>The first is that neighboring neurons often end up with similar weights, which can lead to overfitting, so dropping some out at random can remove this. </p>
+</li>
+<li><p>The second is that often a neuron can over-weigh the input from a neuron in the previous layer, and can over specialize as a result. It can not rely on any of the input which will be randomly dropped, instead, it will spread the weights, by which the weights will be shrinked.</p>
+</li>
+</ul>
+<h2 id="Code-6"><a href="#Code-6" class="headerlink" title="Code"></a>Code</h2><pre><code class="lang-python">from tensorflow.keras import layers
+from tensorflow.keras import Model
+from tensorflow.keras.optimizers import RMSprop
+
+from tensorflow.keras.applications.inception_v3 import InceptionV3
+
+local_weights_file = &#39;/tmp/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5&#39;
+
+pre_trained_model = InceptionV3(input_shape = (150, 150, 3), 
+                                include_top = False,  # whether to include the fully-connected layer at the top of the network.
+                                weights = None) # one of None (random initialization) or &#39;imagenet&#39; (pre-training on ImageNet).
+
+for layer in pre_trained_model.layers:
+  layer.trainable = False
+
+last_layer = pre_trained_model.get_layer(&#39;mixed7&#39;)
+last_output = last_layer.output
+
+# Flatten the output layer to 1 dimension
+x = layers.Flatten()(last_output)
+# Add a fully connected layer with 1,024 hidden units and ReLU activation
+x = layers.Dense(1024, activation=&#39;relu&#39;)(x)
+# Add a dropout rate of 0.2
+x = layers.Dropout(0.2)(x)                  
+# Add a final sigmoid layer for classification
+x = layers.Dense  (1, activation=&#39;sigmoid&#39;)(x)           
+
+model = Model( pre_trained_model.input, x) 
+
+model.compile(optimizer = RMSprop(lr=0.0001), 
+              loss = &#39;binary_crossentropy&#39;, 
+              metrics = [&#39;acc&#39;])
+</code></pre>
+<h1 id="C2W4-Multiclass-Classification"><a href="#C2W4-Multiclass-Classification" class="headerlink" title="C2W4: Multiclass Classification"></a>C2W4: Multiclass Classification</h1><h2 id="Note-7"><a href="#Note-7" class="headerlink" title="Note"></a>Note</h2><ul>
+<li>Use CGI to generate images for Rock, Paper, Scissors</li>
+</ul>
+<h2 id="Code-7"><a href="#Code-7" class="headerlink" title="Code"></a>Code</h2><pre><code class="lang-python">train_generator = training_datagen.flow_from_directory(
+    TRAINING_DIR,
+    target_size=(150,150),
+    class_mode=&#39;categorical&#39;
+)
+
+# Same for validation
+
+model = tf.keras.models.Sequential([
+    # Convolution layers
+    # ...
+    # Flatten the results to feed into a DNN
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dropout(0.5),
+    # 512 neuron hidden layer
+    tf.keras.layers.Dense(512, activation=&#39;relu&#39;),
+    # 3 nodes with softmax
+    tf.keras.layers.Dense(3, activation=&#39;softmax&#39;) 
+])
+</code></pre>
+<p>Another way of using <code>fit_generator</code> API via <code>(images, labels)</code>, instead of via directory</p>
+<pre><code class="lang-python">history = model.fit_generator(train_datagen.flow(training_images, training_labels, batch_size=32),
+                              steps_per_epoch=len(training_images) / 32,
+                              epochs=15,
+                              validation_data=validation_datagen.flow(testing_images, testing_labels, batch_size=32),
+                              validation_steps=len(testing_images) / 32)
+</code></pre>
 
       
     </div>
@@ -1119,7 +1287,7 @@ history = model.fit_generator(
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W1-A-New-Programming-Paradigm"><span class="nav-text">C1W1: A New Programming Paradigm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#New-programming-paradigm"><span class="nav-text">New programming paradigm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-fit-a-line"><span class="nav-text">How to fit a line</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W2-Introduction-to-Computer-Vision"><span class="nav-text">C1W2: Introduction to Computer Vision</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-1"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-are-the-labels-numbers-instead-of-words"><span class="nav-text">Why are the labels numbers instead of words</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-cross-entropy-CE"><span class="nav-text">What is cross entropy (CE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Difference-between-categorical-crossentropy-and-sparse-categorical-crossentropy"><span class="nav-text">Difference between categorical_crossentropy and sparse_categorical_crossentropy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-1"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W3-Enhancing-Vision-with-Convolutional-Neural-Networks"><span class="nav-text">C1W3: Enhancing Vision with Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-2"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolution-Layer"><span class="nav-text">Convolution Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MaxPooling-Layer"><span class="nav-text">MaxPooling Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-CNN-works"><span class="nav-text">Why CNN works</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-2"><span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-compute-output-size"><span class="nav-text">How to compute output size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Two-kinds-of-padding"><span class="nav-text">Two kinds of padding:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-compute-number-of-parameters"><span class="nav-text">How to compute number of parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-the-Convolutions-and-Pooling"><span class="nav-text">Visualizing the Convolutions and Pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W4-Using-Real-world-Images"><span class="nav-text">C1W4: Using Real-world Images</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-3"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageGenerator"><span class="nav-text">ImageGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mini-batch"><span class="nav-text">Mini-batch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Why-mini-batch"><span class="nav-text">Why mini-batch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Optimization"><span class="nav-text">Optimization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-3"><span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-1"><span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageDataGenerator"><span class="nav-text">ImageDataGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-Intermediate-Representations"><span class="nav-text">Visualizing Intermediate Representations</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W1-A-New-Programming-Paradigm"><span class="nav-text">C1W1: A New Programming Paradigm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#New-programming-paradigm"><span class="nav-text">New programming paradigm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-fit-a-line"><span class="nav-text">How to fit a line</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W2-Introduction-to-Computer-Vision"><span class="nav-text">C1W2: Introduction to Computer Vision</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-1"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-are-the-labels-numbers-instead-of-words"><span class="nav-text">Why are the labels numbers instead of words</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-cross-entropy-CE"><span class="nav-text">What is cross entropy (CE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Difference-between-categorical-crossentropy-and-sparse-categorical-crossentropy"><span class="nav-text">Difference between categorical_crossentropy and sparse_categorical_crossentropy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-1"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W3-Enhancing-Vision-with-Convolutional-Neural-Networks"><span class="nav-text">C1W3: Enhancing Vision with Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-2"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Convolution-Layer"><span class="nav-text">Convolution Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MaxPooling-Layer"><span class="nav-text">MaxPooling Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-CNN-works"><span class="nav-text">Why CNN works</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-2"><span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-compute-output-size"><span class="nav-text">How to compute output size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Two-kinds-of-padding"><span class="nav-text">Two kinds of padding:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-compute-number-of-parameters"><span class="nav-text">How to compute number of parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-the-Convolutions-and-Pooling"><span class="nav-text">Visualizing the Convolutions and Pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C1W4-Using-Real-world-Images"><span class="nav-text">C1W4: Using Real-world Images</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-3"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageGenerator"><span class="nav-text">ImageGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mini-batch"><span class="nav-text">Mini-batch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Why-mini-batch"><span class="nav-text">Why mini-batch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Optimization"><span class="nav-text">Optimization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-3"><span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-1"><span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageDataGenerator"><span class="nav-text">ImageDataGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualizing-Intermediate-Representations"><span class="nav-text">Visualizing Intermediate Representations</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C2W1-Exploring-a-Larger-Dataset"><span class="nav-text">C2W1: Exploring a Larger Dataset</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-4"><span class="nav-text">Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-4"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C2W2-Augmentation-A-technique-to-avoid-overfitting"><span class="nav-text">C2W2: Augmentation: A technique to avoid overfitting</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-5"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Image-augmentation"><span class="nav-text">Image augmentation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-5"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C2W3-Transfer-Learning"><span class="nav-text">C2W3: Transfer Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-6"><span class="nav-text">Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-transfer-learning"><span class="nav-text">What is transfer learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-dropout-can-do-the-regularization"><span class="nav-text">Why dropout can do the regularization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-6"><span class="nav-text">Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C2W4-Multiclass-Classification"><span class="nav-text">C2W4: Multiclass Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Note-7"><span class="nav-text">Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-7"><span class="nav-text">Code</span></a></li></ol></li></ol></div>
             
 
           </div>
