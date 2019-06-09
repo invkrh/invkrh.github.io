@@ -156,7 +156,7 @@
 <meta property="og:site_name" content="Yorozuya">
 <meta property="og:description" content="My thoughts on the qualification round of Google Hash Code 2019. If you are interested in the past Online Qualification Round and Finals problem statements, you should check this page.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-04-27T21:01:24.604Z">
+<meta property="og:updated_time" content="2019-05-16T21:36:37.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Google Hash Code 2019">
 <meta name="twitter:description" content="My thoughts on the qualification round of Google Hash Code 2019. If you are interested in the past Online Qualification Round and Finals problem statements, you should check this page.">
@@ -687,7 +687,7 @@ return result
 <h4 id="How-to-find-the-best-vertical-slide-w-r-t-the-previous-slide"><a href="#How-to-find-the-best-vertical-slide-w-r-t-the-previous-slide" class="headerlink" title="How to find the best vertical slide w.r.t the previous slide?"></a>How to find the best vertical slide w.r.t the previous slide?</h4><p>This is the most tricky part of the problem.</p>
 <p>One solution: we can iterate over all the combination of 2 vertical photos and choose the best vertical slide as we did for horizontal slide. However, the time complexity for each step is very high, <script type="math/tex">O(N_v^2)</script>. If you compute the <code>candidates</code> size for each previous slides, we will find that it is, in average, about <strong>7200</strong> vertical photos in case D and <strong>60000</strong> in case E. The brute force solution may work for D, but never works for E.</p>
 <p>A more reasonable solution is heuristic. Given a previous slide, we can first take the best vertical <strong>photo</strong>, denoted as <script type="math/tex">v_i</script>, and then find the second vertical photo <script type="math/tex">v_j</script> maximizing the score between the previous slide <script type="math/tex">p</script> and the vertical slide of <script type="math/tex">v_i</script> and <script type="math/tex">v_j</script>.</p>
-<script type="math/tex; mode=display">v_{i}^{*} = \underset{v_i \in V}{\operatorname{argmax}} score(p, v_i)</script><script type="math/tex; mode=display">v_{j}^{*} = \underset{v_j \in (V - v_i^*)}{\operatorname{argmax}} score(p, v_i + v_j)</script><h4 id="Can-we-do-better"><a href="#Can-we-do-better" class="headerlink" title="Can we do better?"></a>Can we do better?</h4><p>We notice that the sequence can be built in parallel. More precisely, we can hash partition the input photos into <script type="math/tex">M</script> blocks. Each block of photos can be used to build a sub-sequence independently, and then all the sub-sequences could be joined into a sequence. This is a classical map-reduce pattern which cam largely improve the performance. </p>
+<script type="math/tex; mode=display">v_{i}^{*} = \underset{v_i \in V}{\operatorname{argmax}} score(p, v_i)</script><script type="math/tex; mode=display">v_{j}^{*} = \underset{v_j \in (V - v_i^*)}{\operatorname{argmax}} score(p, v_{i}^{*} + v_j)</script><h4 id="Can-we-do-better"><a href="#Can-we-do-better" class="headerlink" title="Can we do better?"></a>Can we do better?</h4><p>We notice that the sequence can be built in parallel. More precisely, we can hash partition the input photos into <script type="math/tex">M</script> blocks. Each block of photos can be used to build a sub-sequence independently, and then all the sub-sequences could be joined into a sequence. This is a classical map-reduce pattern which cam largely improve the performance. </p>
 <h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>You may find the code here (comments included)<br><a href="https://github.com/invkrh/google-hash-code/blob/master/src/main/scala/q2019/SlideShowSolver.scala" target="_blank" rel="noopener">https://github.com/invkrh/google-hash-code/blob/master/src/main/scala/q2019/SlideShowSolver.scala</a></p>
 <h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>With the heuristic algorithm and parallelization trick, we can obtain the following result. The final score is <strong>1112255</strong> which around top 20 in the qualification round, see <a href="https://codingcompetitions.withgoogle.com/hashcode/archive/2019" target="_blank" rel="noopener">here</a>. Moreover, the time for D and E are no more than 5 mins which are also acceptable during the competition.</p>
 <pre><code class="lang-python">Case: a_example
@@ -732,14 +732,7 @@ Stepping:              3
 CPU MHz:               800.015
 CPU max MHz:           4000.0000
 CPU min MHz:           800.0000
-BogoMIPS:              7200.64
-Virtualization:        VT-x
-L1d cache:             32K
-L1i cache:             32K
-L2 cache:              256K
-L3 cache:              8192K
-NUMA node0 CPU(s):     0-7
-Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch epb invpcid_single intel_pt ssbd ibrs ibpb stibp kaiser tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt xsaveopt xsavec xgetbv1 dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+...
 </code></pre>
 
       
@@ -894,7 +887,7 @@ Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca 
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -921,7 +914,7 @@ Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca 
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -950,7 +943,9 @@ Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca 
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
