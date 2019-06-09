@@ -156,7 +156,7 @@
 <meta property="og:site_name" content="Yorozuya">
 <meta property="og:description" content="The EM algorithm is used to find (local) maximum likelihood parameters of a statistical model in cases where the equations cannot be solved directly. Typically these models involve latent variables in">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-06-09T23:24:23.157Z">
+<meta property="og:updated_time" content="2019-06-09T23:36:51.523Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Expectation-Maximization Algorithm Explained">
 <meta name="twitter:description" content="The EM algorithm is used to find (local) maximum likelihood parameters of a statistical model in cases where the equations cannot be solved directly. Typically these models involve latent variables in">
@@ -664,6 +664,9 @@ Q(\boldsymbol{\theta} \mid \boldsymbol{\theta}^{(t)}) &= \sum_{i=1}^{n}\sum_{j=1
 <script type="math/tex; mode=display">
 \Sigma_{j} :=\frac{\sum_{i=1}^{n} p_{ji}^{(t)} (x_i-\mu_j)(x_i - \mu_j)^T}{\sum_{i=1}^{n} p_{ji}^{(t)}}</script></li>
 </ul>
+<blockquote>
+<p>If you are not familiar with the matrix / vector derivative calculus, you may refer to this <a href="./matrix.pdf">cheat sheet</a>.</p>
+</blockquote>
 <h2 id="More-about-GMM"><a href="#More-about-GMM" class="headerlink" title="More about GMM"></a>More about GMM</h2><p>Compared to K-Means which uses hard assignment, GMM uses soft assignment which a good way to represent uncertainty. But GMM is limited in its number of features since it requires storing a covariance matrix which has size quadratic in the number of features. Even when the number of features does not exceed this limit, this algorithm may perform poorly on high-dimensional data.<br>This is due to high-dimensional data:</p>
 <ul>
 <li>making it difficult to cluster at all (based on statistical/theoretical arguments) </li>
