@@ -1785,7 +1785,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff0e29;
+  background: #25ff7a;
 }
 .feed-link,
 .chat {
@@ -2753,4 +2753,7 @@ hr {
   overflow-y: hidden;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+}
+ul {
+  padding-inline-start: 20px;
 }

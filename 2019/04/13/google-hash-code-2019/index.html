@@ -230,10 +230,8 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css'><link rel='stylesheet' href='/css/prism.css'><!-- hexo-inject:end -->
 
-
-  <link rel="stylesheet" href="/css/prism.css"><!-- hexo-inject:begin --><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css'><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -675,7 +673,9 @@
 <h3 id="intuition"><a class="markdownIt-Anchor" href="#intuition"></a> Intuition</h3>
 <p>Actually, we can consider the problem as building a sequence of slides and maximizing its overall transition score. Given the tag set of the previous slide, we can find a slide which maximizes the current transition. If every subsequent transition is optimized, we could eventually optimize the final score.</p>
 <h3 id="greedy-algorithm"><a class="markdownIt-Anchor" href="#greedy-algorithm"></a> Greedy Algorithm</h3>
-<pre class="highlight"><code class>prevSlide &lt;- create a slide of 1 horizontal unused photo or 2 vertical unused photos
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">prevSlide &lt;- create a slide of 1 horizontal unused photo or 2 vertical unused photos
 result += prevSlide
 
 while some photos are unused:
@@ -718,33 +718,37 @@ return result
 <a href="https://github.com/invkrh/google-hash-code/blob/master/src/main/scala/q2019/SlideShowSolver.scala" target="_blank" rel="noopener">https://github.com/invkrh/google-hash-code/blob/master/src/main/scala/q2019/SlideShowSolver.scala</a></p>
 <h2 id="result"><a class="markdownIt-Anchor" href="#result"></a> Result</h2>
 <p>With the heuristic algorithm and parallelization trick, we can obtain the following result. The final score is <strong>1112255</strong> which around top 20 in the qualification round, see <a href="https://codingcompetitions.withgoogle.com/hashcode/archive/2019" target="_blank" rel="noopener">here</a>. Moreover, the time for D and E are no more than 5 mins which are also acceptable during the competition.</p>
-<pre class="highlight"><code class="python">Case: a_example
-Time: <span class="hljs-number">119</span> ms
-Score: <span class="hljs-number">2</span>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">Case: a_example
+Time: 119 ms
+Score: 2
 
 Case: b_lovely_landscapes
-Time: <span class="hljs-number">17569</span> ms
-Score: <span class="hljs-number">201792</span>
+Time: 17569 ms
+Score: 201792
 
 Case: c_memorable_moments
-Time: <span class="hljs-number">165</span> ms
-Score: <span class="hljs-number">1736</span>
+Time: 165 ms
+Score: 1736
 
 Case: d_pet_pictures
-Time: <span class="hljs-number">228491</span> ms
-Score: <span class="hljs-number">428041</span>
+Time: 228491 ms
+Score: 428041
 
 Case: e_shiny_selfies
-Time: <span class="hljs-number">294582</span> ms
-Score: <span class="hljs-number">480684</span>
+Time: 294582 ms
+Score: 480684
 
-Final score = <span class="hljs-number">1112255</span>
+Final score = 1112255
 </code></pre>
 <h2 id="conclusion"><a class="markdownIt-Anchor" href="#conclusion"></a> Conclusion</h2>
 <p>The competition has been well organized as usual. However, I am a little disappointed at the problem itself. The provided data set is very easy to be cracked brute forced. One can just randomize the slide sequence several times and return the best one. Some teams did that and had a good result. Fortunately, these randomized brute force solutions are not good enough for the finalist. Anyway, this reminds me again the maxim <strong>Done is better than perfect</strong>.</p>
 <h2 id="auxiliary"><a class="markdownIt-Anchor" href="#auxiliary"></a> Auxiliary</h2>
 <p>The CPU information of the computer on which the programme has been run.</p>
-<pre class="highlight"><code class="bash">$ lscpu   
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-bash">$ lscpu   
 Architecture:          x86_64
 CPU op-mode(s):        32-bit, 64-bit
 Byte Order:            Little Endian
@@ -975,7 +979,9 @@ CPU min MHz:           800.0000
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1634,7 +1640,6 @@ CPU min MHz:           800.0000
   
 
   
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-  <script type="text/javascript" src="/js/prism.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><!-- hexo-inject:begin --><script type='text/javascript' src='/js/prism.js'></script><!-- hexo-inject:end -->
 </body>
 </html>
