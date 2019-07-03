@@ -999,6 +999,38 @@
   
 
   
+  
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'iV2jaxdX6MY6HWbxpm1WeGfa-MdYXbMMI',
+    appKey: 'jECEbbCLVpkrgzQxGeNA9B3w',
+    placeholder: 'Please fill your email for reply notification',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'en' || 'zh-cn'
+  });
+</script>
+
+
 
 
 

@@ -495,9 +495,33 @@
           
             
             
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/12/19/intervew-questions-in-2018/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/19/intervew-questions-in-2018/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
+          
+            <span id="/2018/12/19/intervew-questions-in-2018/" class="leancloud_visitors" data-flag-title="Interview Questions in 2018">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
           
 
           
@@ -1698,7 +1722,7 @@ rl.isLimited() &#x2F;&#x2F; return false;
           
 
   
-    <div class="comments" id="gitalk-container">
+    <div class="comments" id="comments">
     </div>
 
   
@@ -2064,36 +2088,39 @@ rl.isLimited() &#x2F;&#x2F; return false;
   
 
   
-
+  
 
   
-    
 
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
 
 
 
-<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 
 <script>
-  var gitalk = new Gitalk({
-    clientID: '6cea59841dc82d524fd6',
-    clientSecret: '1b2ea573ba280fcfee5b1f898acba49f8ff90374',
-    repo: 'invkrh.github.io',
-    owner: 'invkrh',
-    admin: ['invkrh'],
-    id: md5(location.pathname),
-    
-      language: 'en',
-    
-    distractionFreeMode: 'true'
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
   });
-  gitalk.render('gitalk-container');
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'iV2jaxdX6MY6HWbxpm1WeGfa-MdYXbMMI',
+    appKey: 'jECEbbCLVpkrgzQxGeNA9B3w',
+    placeholder: 'Please fill your email for reply notification',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true,
+    lang: 'en' || 'zh-cn'
+  });
 </script>
+
+
+
 
   
 
