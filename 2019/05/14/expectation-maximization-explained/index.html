@@ -230,7 +230,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css'><!-- hexo-inject:end -->
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -493,33 +493,9 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/2019/05/14/expectation-maximization-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/14/expectation-maximization-explained/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
-          
-            <span id="/2019/05/14/expectation-maximization-explained/" class="leancloud_visitors" data-flag-title="Expectation-Maximization Algorithm Explained">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
           
 
           
@@ -851,6 +827,10 @@ This is due to high-dimensional data:</p>
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/06/11/linear-algebra-proofs/" rel="prev" title="Linear Algebra Proofs">
+                Linear Algebra Proofs <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -872,7 +852,7 @@ This is due to high-dimensional data:</p>
           
 
   
-    <div class="comments" id="comments">
+    <div class="comments" id="gitalk-container">
     </div>
 
   
@@ -924,7 +904,7 @@ This is due to high-dimensional data:</p>
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -951,7 +931,9 @@ This is due to high-dimensional data:</p>
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -984,7 +966,9 @@ This is due to high-dimensional data:</p>
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1234,39 +1218,36 @@ This is due to high-dimensional data:</p>
   
 
   
+
+
   
+    
 
-  
-
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
-
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
 
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
 
 <script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
+  var gitalk = new Gitalk({
+    clientID: '6cea59841dc82d524fd6',
+    clientSecret: '1b2ea573ba280fcfee5b1f898acba49f8ff90374',
+    repo: 'invkrh.github.io',
+    owner: 'invkrh',
+    admin: ['invkrh'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
   });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: 'iV2jaxdX6MY6HWbxpm1WeGfa-MdYXbMMI',
-    appKey: 'jECEbbCLVpkrgzQxGeNA9B3w',
-    placeholder: 'Please fill your email for reply notification',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: true,
-    lang: 'en' || 'zh-cn'
-  });
+  gitalk.render('gitalk-container');
 </script>
-
-
-
 
   
 

@@ -495,33 +495,9 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">Comments: </span>
-                <a href="/2019/02/23/suan-xiang-feng-mi-ji/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/23/suan-xiang-feng-mi-ji/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
-          
-            <span id="/2019/02/23/suan-xiang-feng-mi-ji/" class="leancloud_visitors" data-flag-title="蒜香蜂蜜鸡">
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Views: </span>
-              
-                <span class="leancloud-visitors-count"></span>
-            </span>
           
 
           
@@ -668,7 +644,7 @@
           
 
   
-    <div class="comments" id="comments">
+    <div class="comments" id="gitalk-container">
     </div>
 
   
@@ -720,7 +696,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -747,7 +723,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">5</span>
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -780,7 +758,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -1030,39 +1010,36 @@
   
 
   
+
+
   
+    
 
-  
-
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
-
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
 
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
 
 <script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
+  var gitalk = new Gitalk({
+    clientID: '6cea59841dc82d524fd6',
+    clientSecret: '1b2ea573ba280fcfee5b1f898acba49f8ff90374',
+    repo: 'invkrh.github.io',
+    owner: 'invkrh',
+    admin: ['invkrh'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
   });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: 'iV2jaxdX6MY6HWbxpm1WeGfa-MdYXbMMI',
-    appKey: 'jECEbbCLVpkrgzQxGeNA9B3w',
-    placeholder: 'Please fill your email for reply notification',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: true,
-    lang: 'en' || 'zh-cn'
-  });
+  gitalk.render('gitalk-container');
 </script>
-
-
-
 
   
 
