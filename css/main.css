@@ -506,10 +506,7 @@ pre,
 code {
   font-family: 'Consolas', consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
 }
-p code,
-h1 code,
-h2 code,
-h3 code {
+:not(pre) > code {
   overflow-wrap: break-word;
   word-wrap: break-word;
   padding: 3px 3px 1px 3px;
@@ -1785,7 +1782,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ddde1a;
+  background: #3c22ff;
 }
 .feed-link,
 .chat {
@@ -2754,6 +2751,11 @@ hr {
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
-ul {
+ul,
+ol {
   padding-inline-start: 20px;
+}
+p + ul,
+p + ol {
+  margin-top: -1em;
 }
