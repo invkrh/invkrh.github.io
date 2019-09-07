@@ -159,7 +159,16 @@
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/shoes.png">
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/horse-vs-human.jpeg">
 <meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/word-embedding.png">
-<meta property="og:updated_time" content="2019-07-16T23:02:05.302Z">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sarcasm-lstm-acc.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sarcasm-conv1d-acc.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sarcasm-lstm-loss.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sarcasm-conv1d-loss.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sentiment-acc-no-dropout.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sentiment-acc.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sentiment-loss-no-dropout.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/sentiment-loss.png">
+<meta property="og:image" content="http://invkrh.me/2019/03/11/tensorflow-specialization-learning-note/learning-rate.png">
+<meta property="og:updated_time" content="2019-09-07T17:02:45.072Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow in Practice Learning Note">
 <meta name="twitter:description" content="A learning note of the coursera specialization Tensorflow in practice given by deeplearning.ai.  Course 1: Introduction to TensorFlow for AI, ML and DL Course 2: Convolutional Neural Networks in Tenso">
@@ -1353,7 +1362,443 @@ out_m.close()
 </ul>
 <h1 id="c3w3-sequence-models"><a class="markdownIt-Anchor" href="#c3w3-sequence-models"></a> C3W3: Sequence models</h1>
 <h2 id="note-10"><a class="markdownIt-Anchor" href="#note-10"></a> Note</h2>
+<ul>
+<li>In terms of loss and accuracy curves, 2-layer LSTM is more smooth.</li>
+<li>LSTM is more likely to overfit than flatten and averaged layer.</li>
+<li>In this week, we tried B-LSTM, B-GRU and Conv1D models. All of them have over-fitting issue, it is natually because there are words which are out of vocabulary. They can not learning during training and leads to the over-fitting.</li>
+</ul>
+<h3 id="model-comparison"><a class="markdownIt-Anchor" href="#model-comparison"></a> Model comparison</h3>
+<h4 id="imdb-subwords-8k"><a class="markdownIt-Anchor" href="#imdb-subwords-8k"></a> IMDB Subwords 8K</h4>
+<p>Training takes too long to run in colab, so no plots.</p>
+<div class="tabs" id="imdb-subwords-8k"><ul class="nav-tabs"><li class="tab active"><a href="#imdb-subwords-8k-1">Single Layer LSTM</a></li><li class="tab"><a href="#imdb-subwords-8k-2">Multiple Layer LSTM</a></li><li class="tab"><a href="#imdb-subwords-8k-3">Multiple Layer GRU</a></li></ul><div class="tab-content"><div class="tab-pane active" id="imdb-subwords-8k-1"><!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(tokenizer.vocab_size, 64),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
+    tf.keras.layers.Dense(64, activation=&#39;relu&#39;),
+    tf.keras.layers.Dense(1, activation=&#39;sigmoid&#39;)
+])
+</code></pre>
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, None, 64)          523840    
+_________________________________________________________________
+bidirectional (Bidirectional (None, 128)               66048     
+_________________________________________________________________
+dense (Dense)                (None, 64)                8256      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 65        
+=================================================================
+Total params: 598,209
+Trainable params: 598,209
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre></div><div class="tab-pane" id="imdb-subwords-8k-2"><!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(tokenizer.vocab_size, 64),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True)),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
+    tf.keras.layers.Dense(64, activation=&#39;relu&#39;),
+    tf.keras.layers.Dense(1, activation=&#39;sigmoid&#39;)
+])
+</code></pre>
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, None, 64)          523840    
+_________________________________________________________________
+bidirectional (Bidirectional (None, None, 128)         66048     
+_________________________________________________________________
+bidirectional_1 (Bidirection (None, 64)                41216     
+_________________________________________________________________
+dense (Dense)                (None, 64)                4160      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 65        
+=================================================================
+Total params: 635,329
+Trainable params: 635,329
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre></div><div class="tab-pane" id="imdb-subwords-8k-3"><!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(tokenizer.vocab_size, 64),
+    tf.keras.layers.Conv1D(128, 5, activation=&#39;relu&#39;),
+    tf.keras.layers.GlobalAveragePooling1D(),
+    tf.keras.layers.Dense(64, activation=&#39;relu&#39;),
+    tf.keras.layers.Dense(1, activation=&#39;sigmoid&#39;)
+])
+</code></pre>
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, None, 64)          523840    
+_________________________________________________________________
+conv1d (Conv1D)              (None, None, 128)         41088     
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 128)               0         
+_________________________________________________________________
+dense (Dense)                (None, 64)                8256      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 65        
+=================================================================
+Total params: 573,249
+Trainable params: 573,249
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre></div></div></div>
+<h4 id="sarcasm"><a class="markdownIt-Anchor" href="#sarcasm"></a> Sarcasm</h4>
+<div class="tabs" id="sarcasm"><ul class="nav-tabs"><li class="tab active"><a href="#sarcasm-1">Bidirectional LSTM</a></li><li class="tab"><a href="#sarcasm-2">1D Convolutional Layer</a></li></ul><div class="tab-content"><div class="tab-pane active" id="sarcasm-1"><!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(vocab_size, embedding_dim, input_length=max_length),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
+    tf.keras.layers.Dense(24, activation=&#39;relu&#39;),
+    tf.keras.layers.Dense(1, activation=&#39;sigmoid&#39;)
+])
+</code></pre>
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 120, 16)           16000     
+_________________________________________________________________
+bidirectional (Bidirectional (None, 64)                12544     
+_________________________________________________________________
+dense (Dense)                (None, 24)                1560      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 25        
+=================================================================
+Total params: 30,129
+Trainable params: 30,129
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre></div><div class="tab-pane" id="sarcasm-2"><!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(vocab_size, embedding_dim, input_length=max_length),
+    tf.keras.layers.Conv1D(128, 5, activation=&#39;relu&#39;),
+    tf.keras.layers.GlobalMaxPooling1D(),
+    tf.keras.layers.Dense(24, activation=&#39;relu&#39;),
+    tf.keras.layers.Dense(1, activation=&#39;sigmoid&#39;)
+])
+</code></pre>
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">Model: &quot;sequential&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 120, 16)           16000     
+_________________________________________________________________
+conv1d (Conv1D)              (None, 116, 128)          10368     
+_________________________________________________________________
+global_max_pooling1d (Global (None, 128)               0         
+_________________________________________________________________
+dense (Dense)                (None, 24)                3096      
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 25        
+=================================================================
+Total params: 29,489
+Trainable params: 29,489
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre></div></div></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Bidirectional LSTM</th>
+<th>1D Convolutional Layer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time per epoch</td>
+<td>85s</td>
+<td>3s</td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sarcasm-lstm-acc.png" class="full-image" alt title><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sarcasm-conv1d-acc.png" class="full-image" alt title><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+</tr>
+<tr>
+<td>Loss</td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sarcasm-lstm-loss.png" class="full-image" alt title><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sarcasm-conv1d-loss.png" class="full-image" alt title><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+</tr>
+</tbody>
+</table>
 <h2 id="code-11"><a class="markdownIt-Anchor" href="#code-11"></a> Code</h2>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(vocab_size+1, embedding_dim, input_length=max_length, weights=[embeddings_matrix], trainable=False),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Conv1D(64, 5, activation=&#39;relu&#39;),
+    tf.keras.layers.MaxPooling1D(pool_size=4),
+    tf.keras.layers.LSTM(64),
+    tf.keras.layers.Dense(1, activation=&#39;sigmoid&#39;)
+])
+model.compile(loss=&#39;binary_crossentropy&#39;,optimizer=&#39;adam&#39;,metrics=[&#39;accuracy&#39;])
+model.summary()
+
+num_epochs = 50
+history = model.fit(training_sequences, 
+                    training_labels, 
+                    epochs=num_epochs, 
+                    validation_data=(test_sequences, test_labels), 
+                    verbose=2)
+</code></pre>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 16, 100)           13802600  
+_________________________________________________________________
+dropout (Dropout)            (None, 16, 100)           0         
+_________________________________________________________________
+conv1d (Conv1D)              (None, 12, 64)            32064     
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3, 64)             0         
+_________________________________________________________________
+lstm (LSTM)                  (None, 64)                33024     
+_________________________________________________________________
+dense (Dense)                (None, 1)                 65        
+=================================================================
+Total params: 13,867,753
+Trainable params: 65,153
+Non-trainable params: 13,802,600
+_________________________________________________________________
+</code></pre>
+<p>Applying regularization techniques like drop out can overcome overfitting. We can see from the figures below that the validation loss does not increase sharply!</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Without Dropout</th>
+<th>With Dropout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accuracy</td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sentiment-acc-no-dropout.png" class="full-image" alt title style="max-width: none; width: 100%;"><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sentiment-acc.png" class="full-image" alt title style="max-width: none; width: 100%;"><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+</tr>
+<tr>
+<td>Loss</td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sentiment-loss-no-dropout.png" class="full-image" alt title style="max-width: none; width: 100%;"><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+<td><span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="sentiment-loss.png" class="full-image" alt title style="max-width: none; width: 100%;"><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="c3w4-sequence-models-and-literature"><a class="markdownIt-Anchor" href="#c3w4-sequence-models-and-literature"></a> C3W4: Sequence models and literature</h1>
+<h2 id="note-11"><a class="markdownIt-Anchor" href="#note-11"></a> Note</h2>
+<p>When you have very large bodies of text with many many words, the word based prediction does not work well. Because the number of unique words in the collection is very big, and there are over millions of sequences generated using the algorithm. So the labels alone would require the storage of many terabytes of RAM.</p>
+<p>A better approache is character-based prediction. The full number of unique characters in a corpus is far less than the full number of unique words, at least in English. So the same principles that you use to predict words can be used to apply here.</p>
+<h2 id="code-12"><a class="markdownIt-Anchor" href="#code-12"></a> Code</h2>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">corpus = data.lower().split(&quot;\n&quot;)
+
+tokenizer.fit_on_texts(corpus)
+total_words = len(tokenizer.word_index) + 1 # Add 1 for OOV
+
+# create input sequences using list of tokens
+input_sequences = []
+for line in corpus:
+	token_list = tokenizer.texts_to_sequences([line])[0]
+	for i in range(1, len(token_list)):
+		n_gram_sequence = token_list[:i+1]
+		input_sequences.append(n_gram_sequence)
+
+
+# pad sequences 
+max_sequence_len = max([len(x) for x in input_sequences])
+input_sequences = np.array(pad_sequences(input_sequences, 
+                                         maxlen=max_sequence_len, 
+                                         padding=&#39;pre&#39;))
+
+# create predictors and label
+predictors, label = input_sequences[:,:-1],input_sequences[:,-1]
+
+label = tensorflow.keras.utils.to_categorical(label, num_classes=total_words)
+
+model = Sequential()
+# input_length: minus 1 since the last word is the label
+model.add(Embedding(total_words, 100, input_length=max_sequence_len-1)) 
+model.add(Bidirectional(LSTM(150, return_sequences = True)))
+model.add(Dropout(0.2))
+model.add(LSTM(100))
+model.add(Dense(total_words&#x2F;2, activation=&#39;relu&#39;, kernel_regularizer=regularizers.l2(0.01)))
+model.add(Dense(total_words, activation=&#39;softmax&#39;))
+model.compile(loss=&#39;categorical_crossentropy&#39;, optimizer=&#39;adam&#39;, metrics=[&#39;accuracy&#39;])
+print(model.summary())
+
+history = model.fit(predictors, label, epochs=100, verbose=1)
+</code></pre>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-none">Model: &quot;sequential_1&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 10, 100)           321100    
+_________________________________________________________________
+bidirectional (Bidirectional (None, 10, 300)           301200    
+_________________________________________________________________
+dropout (Dropout)            (None, 10, 300)           0         
+_________________________________________________________________
+lstm_1 (LSTM)                (None, 100)               160400    
+_________________________________________________________________
+dense (Dense)                (None, 1605)              162105    
+_________________________________________________________________
+dense_1 (Dense)              (None, 3211)              5156866   
+=================================================================
+Total params: 6,101,671
+Trainable params: 6,101,671
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<h1 id="c4w1-sequences-and-prediction"><a class="markdownIt-Anchor" href="#c4w1-sequences-and-prediction"></a> C4W1: Sequences and Prediction</h1>
+<h2 id="note-12"><a class="markdownIt-Anchor" href="#note-12"></a> Note</h2>
+<p>Imputation: Fill data in the pase or fill the missing data<br>
+Trends: upward or downward<br>
+Seasonalities: repeated patterns<br>
+Autocorrelation: correlated with a delayed copy of itself (lag)<br>
+Noise：random / occasional values<br>
+Combination of all the above<br>
+Non-stationary time series: the behavior changed, it should be trained by using time window</p>
+<h3 id="split-training-period-validation-period-test-period"><a class="markdownIt-Anchor" href="#split-training-period-validation-period-test-period"></a> Split training period, validation period, test period</h3>
+<ul>
+<li>
+<p>Fixed partition:<br>
+If test period is the most recent dataset which has a strong signal for the future, it should be used to train the model, otherwise the model may not be optimal. So it is quite common to use just a training period and a validation period for model training, and the test set is in the future</p>
+</li>
+<li>
+<p>Roll-forward partition:<br>
+At each iteration, we train the model on a training period. And we use it to forecast the following day, or the following week, in the validation period. It can been seen as doing fixed partitioning a number of times, and then continually refining the model as such</p>
+</li>
+</ul>
+<h3 id="metric"><a class="markdownIt-Anchor" href="#metric"></a> Metric</h3>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">mse = np.square(errors).mean()
+mae = np.abs(errors).mean()
+</code></pre>
+<p><strong>mse</strong> penalize more large errors than <strong>mae</strong> does.<br>
+if large errors are potentially dangerous and they cost you much more than smaller errors, then you may prefer the mse. But if your gain or your loss is just proportional to the size of the error, then the mae may be better.</p>
+<h3 id="moving-average-and-differencing"><a class="markdownIt-Anchor" href="#moving-average-and-differencing"></a> Moving average and differencing</h3>
+<ol>
+<li>Use differencing to cancel out the seasonality and trends</li>
+<li>Use moving average to forecast the difference time series</li>
+<li>Use moving average to past time series</li>
+<li>Add back the smoothed differece to the smoothed past time series</li>
+</ol>
+<h3 id="trailing-windows-and-centered-windows"><a class="markdownIt-Anchor" href="#trailing-windows-and-centered-windows"></a> Trailing windows and centered windows</h3>
+<p>Moving averages using centered windows can be more accurate than using trailing windows. But we can’t use centered windows to smooth present values since we don’t know future values. However, to smooth past values we can afford to use centered windows.</p>
+<h2 id="code-13"><a class="markdownIt-Anchor" href="#code-13"></a> Code</h2>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">from tensorflow import keras
+def moving_average_forecast(series, window_size):
+  &quot;&quot;&quot;Forecasts the mean of the last few values.
+     If window_size=1, then this is equivalent to naive forecast&quot;&quot;&quot;
+  forecast = []
+  for time in range(len(series) - window_size):
+    forecast.append(series[time:time + window_size].mean())
+  return np.array(forecast)x
+print(keras.metrics.mean_squared_error(x_valid, naive_forecast).numpy())
+print(keras.metrics.mean_absolute_error(x_valid, naive_forecast).numpy())
+</code></pre>
+<h1 id="c4w2-deep-neural-networks-for-time-series"><a class="markdownIt-Anchor" href="#c4w2-deep-neural-networks-for-time-series"></a> C4W2: Deep Neural Networks for Time Series</h1>
+<h2 id="note-13"><a class="markdownIt-Anchor" href="#note-13"></a> Note</h2>
+<h3 id="preparing-feature-and-labels"><a class="markdownIt-Anchor" href="#preparing-feature-and-labels"></a> Preparing feature and labels</h3>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">dataset = tf.data.Dataset.range(10)
+dataset = dataset.window(5, shift=1, drop_remainder=True)
+dataset = dataset.flat_map(lambda window: window.batch(5))
+dataset = dataset.map(lambda window: (window[:-1], window[-1:]))
+dataset = dataset.shuffle(buffer_size=10)
+dataset = dataset.batch(2).prefetch(1)
+for x,y in dataset:
+  print(&quot;x = &quot;, x.numpy())
+  print(&quot;y = &quot;, y.numpy())
+</code></pre>
+<ul>
+<li>On line 3, each <code>window</code> is an instance of class <code>tensorflow.python.data.ops.dataset_ops._VariantDataset</code> containing 5 elements. But We need to convert it into a tensor, so we just cut it to batches by 5 elements. This is why we have <code>window.batch(5)</code></li>
+<li>On line 5, <code>shuffle</code> fills a buffer with <code>buffer_size</code> elements, then randomly samples elements from this buffer, replacing the selected elements with new elements. For perfect shuffling, a buffer size greater than or equal to the full size of the dataset is required and the downside is that it really takes long time. If you don’t care about perfect shuffling, choosing a small number of buffer will just speed things up. You can even <code>buffer_size</code> is set to 1, in this case, no shuffle will happen here</li>
+<li>On line 6, according to the <a href="https://www.tensorflow.org/guide/performance/datasets" target="_blank" rel="noopener">tensorflow doc</a>:<br>
+The <code>tf.data</code> API provides a software pipelining mechanism through the <code>tf.data.Dataset.prefetch</code> transformation, which can be used to decouple the time data is produced from the time it is consumed. In particular, the transformation uses a background thread and an internal buffer to prefetch elements from the input dataset ahead of the time they are requested. Thus, to achieve the pipelining effect illustrated above, you can add <code>prefetch(1)</code> as the final transformation to your dataset pipeline (or <code>prefetch(n)</code> if a single training step consumes n elements).</li>
+</ul>
+<h3 id="sequence-bias"><a class="markdownIt-Anchor" href="#sequence-bias"></a> Sequence Bias</h3>
+<p>Sequence bias is when the order of things can impact the selection of things. For example, if I were to ask you your favorite TV show, and listed “Game of Thrones”, “Killing Eve”, “Travellers” and “Doctor Who” in that order, you’re probably more likely to select ‘Game of Thrones’ as you are familiar with it, and it’s the first thing you see. Even if it is equal to the other TV shows. So, when training data in a dataset, we don’t want the sequence to impact the training in a similar way, so it’s good to shuffle them up.</p>
+<h3 id="find-the-best-learning-rate"><a class="markdownIt-Anchor" href="#find-the-best-learning-rate"></a> Find the best learning rate</h3>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">lr_schedule = tf.keras.callbacks.LearningRateScheduler(
+    lambda epoch: 1e-8 * 10**(epoch &#x2F; 20))
+optimizer = tf.keras.optimizers.SGD(lr=1e-8, momentum=0.9)
+model.compile(loss=&quot;mse&quot;, optimizer=optimizer)
+history = model.fit(dataset, epochs=100, callbacks=[lr_schedule], verbose=0)
+# plot the loss per epoch against the learning rate per epoch
+lrs = 1e-8 * (10 ** (np.arange(100) &#x2F; 20))
+plt.semilogx(lrs, history.history[&quot;loss&quot;])
+plt.axis([1e-8, 1e-3, 0, 300])
+</code></pre>
+<span itemprop="image" itemscope itemtype="http://schema.org/ImageObject"><img itemprop="url image" src="learning-rate.png" class="full-image" alt title><meta itemprop="width" content="auto"><meta itemprop="height" content="auto"></span>
+<p>Here, the best learning rate is around 7e-6, because it is the lowest point of the curve where it’s still relatively stable.</p>
+<h1 id="c4w3-recurrent-neural-networks-for-time-series"><a class="markdownIt-Anchor" href="#c4w3-recurrent-neural-networks-for-time-series"></a> C4W3: Recurrent Neural Networks for Time Series</h1>
+<h2 id="note-14"><a class="markdownIt-Anchor" href="#note-14"></a> Note</h2>
+<p>For numeric series, things such as closer numbers in the series might have a greater impact than those further away from our target value.</p>
+<p>In some cases, you might want to input a sequence, but you don’t want to output on and you just want to get a single vector for each instance in the batch. This is typically called a sequence to vector RNN. But in reality, all you do is ignore all of the outputs, except the last one. When using Keras in TensorFlow, this is the default behavior.</p>
+<p>If you want the recurrent layer to output a sequence, you have to specify <code>return_sequences=True</code> when creating the layer. You’ll need to do this when you stack one RNN layer on top of another.</p>
+<p>(huber loss)[<a href="https://en.wikipedia.org/wiki/Huber_loss" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Huber_loss</a>]<br>
+The Huber function is a loss function that’s less sensitive to outliers and as this data can get a little bit noisy, it’s worth giving it a shot.</p>
+<h2 id="code-14"><a class="markdownIt-Anchor" href="#code-14"></a> Code</h2>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">tf.keras.backend.clear_session()
+dataset = windowed_dataset(x_train, window_size, batch_size, shuffle_buffer_size)
+
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1)),
+  tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequences=True)),
+  tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
+  tf.keras.layers.Dense(1),
+  tf.keras.layers.Lambda(lambda x: x * 100.0)
+])
+
+model.compile(loss=&quot;mse&quot;, optimizer=tf.keras.optimizers.SGD(lr=1e-5, momentum=0.9),metrics=[&quot;mae&quot;])
+history = model.fit(dataset,epochs=500,verbose=1)
+</code></pre>
+<p>Note:<br>
+The last lambda layer is used to scale up the outputs by 100, which helps training. The default activation function in the RNN layers is tanH which is the hyperbolic tangent activation. This outputs values between negative one and one. Since the time series values are in that order usually in the 10s like 40s, 50s, 60s, and 70s, then scaling up the outputs to the same ballpark can help us with learning.</p>
+<h1 id="c4w4-real-world-time-series-data"><a class="markdownIt-Anchor" href="#c4w4-real-world-time-series-data"></a> C4W4: Real-world time series data</h1>
+<h2 id="note-15"><a class="markdownIt-Anchor" href="#note-15"></a> Note</h2>
+
+<!-- Has Prism -->
+<pre class="line-numbers" style><code class="language-python">model = tf.keras.models.Sequential([
+  tf.keras.layers.Conv1D(filters=32, kernel_size=5,
+                      strides=1, padding=&quot;causal&quot;,
+                      activation=&quot;relu&quot;,
+                      input_shape=[None, 1]),
+  tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequences=True)),
+  tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequences=True)),
+  tf.keras.layers.Dense(1),
+  tf.keras.layers.Lambda(lambda x: x * 200)
+])
+</code></pre>
+<p><code>padding=&quot;causal&quot;</code><br>
+This simply pads the layer’s input with zeros in the front so that we can also predict the values of early time steps in the window</p>
+<p>A good explanation (here)[<a href="https://theblog.github.io/post/convolution-in-autoregressive-neural-networks/" target="_blank" rel="noopener">https://theblog.github.io/post/convolution-in-autoregressive-neural-networks/</a>]</p>
 
       
     </div>
@@ -1665,7 +2110,7 @@ out_m.close()
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w1-a-new-programming-paradigm"><span class="nav-text"> C1W1: A New Programming Paradigm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new-programming-paradigm"><span class="nav-text"> New programming paradigm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-fit-a-line"><span class="nav-text"> How to fit a line</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w2-introduction-to-computer-vision"><span class="nav-text"> C1W2: Introduction to Computer Vision</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-2"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why-are-the-labels-numbers-instead-of-words"><span class="nav-text"> Why are the labels numbers instead of words</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#what-is-cross-entropy-ce"><span class="nav-text"> What is cross entropy (CE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#difference-between-categorical_crossentropy-and-sparse_categorical_crossentropy"><span class="nav-text"> Difference between categorical_crossentropy and sparse_categorical_crossentropy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-2"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w3-enhancing-vision-with-convolutional-neural-networks"><span class="nav-text"> C1W3: Enhancing Vision with Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-3"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#convolution-layer"><span class="nav-text"> Convolution Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maxpooling-layer"><span class="nav-text"> MaxPooling Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-cnn-works"><span class="nav-text"> Why CNN works</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-3"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#model"><span class="nav-text"> Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-compute-output-size"><span class="nav-text"> How to compute output size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#two-kinds-of-padding"><span class="nav-text"> Two kinds of padding:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-compute-number-of-parameters"><span class="nav-text"> How to compute number of parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visualizing-the-convolutions-and-pooling"><span class="nav-text"> Visualizing the Convolutions and Pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w4-using-real-world-images"><span class="nav-text"> C1W4: Using Real-world Images</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-4"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#imagegenerator"><span class="nav-text"> ImageGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mini-batch"><span class="nav-text"> Mini-batch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#why-mini-batch"><span class="nav-text"> Why mini-batch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#optimization"><span class="nav-text"> Optimization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-4"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#model-2"><span class="nav-text"> Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#imagedatagenerator"><span class="nav-text"> ImageDataGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visualizing-intermediate-representations"><span class="nav-text"> Visualizing Intermediate Representations</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w1-exploring-a-larger-dataset"><span class="nav-text"> C2W1: Exploring a Larger Dataset</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-5"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-5"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w2-augmentation-a-technique-to-avoid-overfitting"><span class="nav-text"> C2W2: Augmentation: A technique to avoid overfitting</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-6"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#image-augmentation"><span class="nav-text"> Image augmentation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-6"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w3-transfer-learning"><span class="nav-text"> C2W3: Transfer Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-7"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#what-is-transfer-learning"><span class="nav-text"> What is transfer learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-dropout-can-do-the-regularization"><span class="nav-text"> Why dropout can do the regularization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-7"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w4-multiclass-classification"><span class="nav-text"> C2W4: Multiclass Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-8"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-8"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w1-sentiment-in-text"><span class="nav-text"> C3W1: Sentiment in text</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#code-9"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w2-word-embeddings"><span class="nav-text"> C3W2: Word Embeddings</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-9"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why-subwords-works-poorly"><span class="nav-text"> Why subwords works poorly</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-10"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#check-tf-version"><span class="nav-text"> Check TF version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#download-imdb_reviews-via-tensorflow-datasets"><span class="nav-text"> Download imdb_reviews via tensorflow-datasets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prepare-dataset"><span class="nav-text"> Prepare dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#train-word-embedding-label"><span class="nav-text"> Train word embedding label</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word-embedding-visualization"><span class="nav-text"> Word embedding visualization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w3-sequence-models"><span class="nav-text"> C3W3: Sequence models</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-10"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-11"><span class="nav-text"> Code</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w1-a-new-programming-paradigm"><span class="nav-text"> C1W1: A New Programming Paradigm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new-programming-paradigm"><span class="nav-text"> New programming paradigm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-fit-a-line"><span class="nav-text"> How to fit a line</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w2-introduction-to-computer-vision"><span class="nav-text"> C1W2: Introduction to Computer Vision</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-2"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why-are-the-labels-numbers-instead-of-words"><span class="nav-text"> Why are the labels numbers instead of words</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#what-is-cross-entropy-ce"><span class="nav-text"> What is cross entropy (CE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#difference-between-categorical_crossentropy-and-sparse_categorical_crossentropy"><span class="nav-text"> Difference between categorical_crossentropy and sparse_categorical_crossentropy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-2"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w3-enhancing-vision-with-convolutional-neural-networks"><span class="nav-text"> C1W3: Enhancing Vision with Convolutional Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-3"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#convolution-layer"><span class="nav-text"> Convolution Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maxpooling-layer"><span class="nav-text"> MaxPooling Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-cnn-works"><span class="nav-text"> Why CNN works</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-3"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#model"><span class="nav-text"> Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-compute-output-size"><span class="nav-text"> How to compute output size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#two-kinds-of-padding"><span class="nav-text"> Two kinds of padding:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-compute-number-of-parameters"><span class="nav-text"> How to compute number of parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visualizing-the-convolutions-and-pooling"><span class="nav-text"> Visualizing the Convolutions and Pooling</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c1w4-using-real-world-images"><span class="nav-text"> C1W4: Using Real-world Images</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-4"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#imagegenerator"><span class="nav-text"> ImageGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mini-batch"><span class="nav-text"> Mini-batch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#why-mini-batch"><span class="nav-text"> Why mini-batch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#optimization"><span class="nav-text"> Optimization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-4"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#model-2"><span class="nav-text"> Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#imagedatagenerator"><span class="nav-text"> ImageDataGenerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visualizing-intermediate-representations"><span class="nav-text"> Visualizing Intermediate Representations</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w1-exploring-a-larger-dataset"><span class="nav-text"> C2W1: Exploring a Larger Dataset</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-5"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-5"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w2-augmentation-a-technique-to-avoid-overfitting"><span class="nav-text"> C2W2: Augmentation: A technique to avoid overfitting</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-6"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#image-augmentation"><span class="nav-text"> Image augmentation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-6"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w3-transfer-learning"><span class="nav-text"> C2W3: Transfer Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-7"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#what-is-transfer-learning"><span class="nav-text"> What is transfer learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#why-dropout-can-do-the-regularization"><span class="nav-text"> Why dropout can do the regularization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-7"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c2w4-multiclass-classification"><span class="nav-text"> C2W4: Multiclass Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-8"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-8"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w1-sentiment-in-text"><span class="nav-text"> C3W1: Sentiment in text</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#code-9"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w2-word-embeddings"><span class="nav-text"> C3W2: Word Embeddings</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-9"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why-subwords-works-poorly"><span class="nav-text"> Why subwords works poorly</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-10"><span class="nav-text"> Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#check-tf-version"><span class="nav-text"> Check TF version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#download-imdb_reviews-via-tensorflow-datasets"><span class="nav-text"> Download imdb_reviews via tensorflow-datasets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prepare-dataset"><span class="nav-text"> Prepare dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#train-word-embedding-label"><span class="nav-text"> Train word embedding label</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#word-embedding-visualization"><span class="nav-text"> Word embedding visualization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w3-sequence-models"><span class="nav-text"> C3W3: Sequence models</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-10"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#model-comparison"><span class="nav-text"> Model comparison</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#imdb-subwords-8k"><span class="nav-text"> IMDB Subwords 8K</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sarcasm"><span class="nav-text"> Sarcasm</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-11"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c3w4-sequence-models-and-literature"><span class="nav-text"> C3W4: Sequence models and literature</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-11"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-12"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c4w1-sequences-and-prediction"><span class="nav-text"> C4W1: Sequences and Prediction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-12"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#split-training-period-validation-period-test-period"><span class="nav-text"> Split training period, validation period, test period</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#metric"><span class="nav-text"> Metric</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#moving-average-and-differencing"><span class="nav-text"> Moving average and differencing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trailing-windows-and-centered-windows"><span class="nav-text"> Trailing windows and centered windows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-13"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c4w2-deep-neural-networks-for-time-series"><span class="nav-text"> C4W2: Deep Neural Networks for Time Series</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-13"><span class="nav-text"> Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#preparing-feature-and-labels"><span class="nav-text"> Preparing feature and labels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sequence-bias"><span class="nav-text"> Sequence Bias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find-the-best-learning-rate"><span class="nav-text"> Find the best learning rate</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c4w3-recurrent-neural-networks-for-time-series"><span class="nav-text"> C4W3: Recurrent Neural Networks for Time Series</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-14"><span class="nav-text"> Note</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#code-14"><span class="nav-text"> Code</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c4w4-real-world-time-series-data"><span class="nav-text"> C4W4: Real-world time series data</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#note-15"><span class="nav-text"> Note</span></a></li></ol></li></ol></div>
             
 
           </div>
